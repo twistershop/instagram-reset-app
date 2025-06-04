@@ -5,43 +5,126 @@
     <title>Instagram Şifre Sıfırlama</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #fafafa;
-            text-align: center;
-            padding: 50px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #f9ce34 0%, #ee2a7b 50%, #6228d7 100%);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
-        input, button {
-            padding: 10px;
+        .container {
+            background: #fff;
+            padding: 40px 30px 30px 30px;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+            min-width: 320px;
+            max-width: 90vw;
+        }
+        h1 {
+            color: #ee2a7b;
+            margin-bottom: 24px;
+            font-size: 2rem;
+            letter-spacing: 1px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        input[type="email"] {
+            padding: 12px;
             font-size: 16px;
-            margin: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            transition: border 0.2s;
+        }
+        input[type="email"]:focus {
+            border: 1.5px solid #ee2a7b;
+        }
+        button {
+            padding: 12px;
+            font-size: 16px;
+            background: linear-gradient(90deg, #f9ce34 0%, #ee2a7b 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 2px 8px rgba(238, 42, 123, 0.08);
+        }
+        button:hover {
+            background: linear-gradient(90deg, #ee2a7b 0%, #f9ce34 100%);
+            transform: translateY(-2px) scale(1.03);
         }
         #result {
             font-weight: bold;
             margin-top: 20px;
+            min-height: 24px;
+            transition: color 0.2s;
+        }
+        .footer-itemsatis {
+            width: 100vw;
+            text-align: center;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            padding: 14px 0 10px 0;
+            background: rgba(255,255,255,0.85);
+            font-size: 1rem;
+            letter-spacing: 1px;
+            box-shadow: 0 -2px 12px 0 rgba(31,38,135,0.07);
+            z-index: 10;
+        }
+        .footer-itemsatis a {
+            color: #ee2a7b;
+            font-weight: bold;
+            text-decoration: none;
+            margin-left: 6px;
+            transition: color 0.2s;
+        }
+        .footer-itemsatis a:hover {
+            color: #6228d7;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <h1>Instagram Şifre Sıfırlama</h1>
-    <form id="resetForm">
-        <input type="email" name="email" placeholder="E-posta adresiniz" required>
-        <button type="submit">Gönder</button>
-    </form>
-    <p id="result"></p>
-
+    <div class="container">
+        <h1>Instagram Şifre Sıfırlama</h1>
+        <form id="resetForm">
+            <input type="email" name="email" placeholder="E-posta adresiniz" required>
+            <button type="submit">Gönder</button>
+        </form>
+        <p id="result"></p>
+    </div>
+    <footer class="footer-itemsatis">
+        <span>Powered by</span>
+        <a href="https://www.itemsatis.com/p/TwisterShop" target="_blank">TwisterShop</a>
+    </footer>
     <script>
         const form = document.getElementById('resetForm');
+        const button = form.querySelector('button');
+        const resultBox = document.getElementById('result');
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
+            button.disabled = true;
+            button.innerText = "Gönderiliyor...";
+            resultBox.innerText = "Gönderiliyor...";
+            resultBox.style.color = "#888";
             const formData = new FormData(form);
             const response = await fetch('/send_reset', {
                 method: 'POST',
                 body: formData
             });
             const result = await response.json();
-            const resultBox = document.getElementById('result');
             resultBox.innerText = result.message;
             resultBox.style.color = result.success ? 'green' : 'red';
+            button.disabled = false;
+            button.innerText = "Gönder";
         });
     </script>
 </body>
