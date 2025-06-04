@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Instagram Şifre Sıfırlama</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fafafa;
+            text-align: center;
+            padding: 50px;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px;
+        }
+        #result {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Instagram Şifre Sıfırlama</h1>
+    <form id="resetForm">
+        <input type="email" name="email" placeholder="E-posta adresiniz" required>
+        <button type="submit">Gönder</button>
+    </form>
+    <p id="result"></p>
+
+    <script>
+        const form = document.getElementById('resetForm');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const response = await fetch('/send_reset', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            const resultBox = document.getElementById('result');
+            resultBox.innerText = result.message;
+            resultBox.style.color = result.success ? 'green' : 'red';
+        });
+    </script>
+</body>
+</html>
